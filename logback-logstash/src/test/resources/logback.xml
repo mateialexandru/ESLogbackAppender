@@ -1,0 +1,51 @@
+<configuration>
+
+	<!--<appender name="IOAppender" class="com.busymachines.logback.IOLogstashAppender">-->
+		<!--<filePath>/home/alex/Documents/Thesis/logger/logsIO.txt</filePath>-->
+	<!--</appender>-->
+	<!--<appender name="NIOAppender" class="com.busymachines.logback.NIOLogstashAppender">-->
+		<!--<filePath>/home/alex/Documents/Thesis/logger/logsWithNIO.txt</filePath>-->
+	<!--</appender>-->
+	<appender name="SQLAppender" class="com.busymachines.logback.SqlLogstashAppender">
+		<database>log</database>
+		<driver>org.postgresql.Driver</driver>
+		<host>localhost</host>
+		<port>5432</port>
+		<user>postgres</user>
+		<password>HOew6xq31J7rBBA</password>
+	</appender>
+	<!--<appender name="ESAppender" class="com.busymachines.logback.EsLogstashAppender">-->
+		<!--<indexNamePrefix>logstash</indexNamePrefix>-->
+		<!--<indexNameDateFormat>YYYY.MM.dd</indexNameDateFormat>-->
+		<!--<indexDocumentType>logs</indexDocumentType>-->
+		<!--<clusterName>elasticsearch</clusterName>-->
+		<!--<hostNames>localhost</hostNames>-->
+		<!--<port>9300</port>-->
+	<!--</appender>-->
+	<!--<appender name="MQESAppender"-->
+		<!--class="com.busymachines.logback.MessageQueueEsLogstashAppender">-->
+		<!--<indexNamePrefix>logstash</indexNamePrefix>-->
+		<!--<indexNameDateFormat>YYYY.MM.DD</indexNameDateFormat>-->
+		<!--<indexDocumentType>logs</indexDocumentType>-->
+		<!--<clusterName>elasticsearch</clusterName>-->
+		<!--<hostNames>localhost</hostNames>-->
+		<!--<port>9300</port>-->
+	<!--</appender>-->
+
+	<!--<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">-->
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
+			<!--by default -->
+		<!--<encoder>-->
+			<!--<pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n-->
+			<!--</pattern>-->
+		<!--</encoder>-->
+	<!--</appender>-->
+
+	<root level="DEBUG">
+		<!--<appender-ref ref="ESAppender" />-->
+		<appender-ref ref="SQLAppender" />
+		<!--<appender-ref ref="NIOAppender" />-->
+		<!--<appender-ref ref="MQESAppender" />-->
+	</root>
+
+</configuration>
