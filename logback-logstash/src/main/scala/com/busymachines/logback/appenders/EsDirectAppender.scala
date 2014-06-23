@@ -19,7 +19,7 @@ import com.codahale.metrics.{ Timer, MetricRegistry, ConsoleReporter, CsvReporte
 import java.util.concurrent.TimeUnit
 import java.io.File
 
-class EsLogstashAppender[E] extends UnsynchronizedAppenderBase[E] {
+class EsDirectAppender[E] extends UnsynchronizedAppenderBase[E] {
 
   def initializeMetrics = {
     val metrics: MetricRegistry = new MetricRegistry();

@@ -1,4 +1,4 @@
-package com.busymachines.logback.appenders
+package com.busymachines.logback.misc
 
 /**
  * Created by alex on 23.06.2014.

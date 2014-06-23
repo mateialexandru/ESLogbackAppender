@@ -10,7 +10,7 @@ import com.codahale.metrics.{ConsoleReporter, CsvReporter, MetricRegistry, Timer
 
 import scala.beans.BeanProperty
 
-class IOLogstashAppender[E] extends UnsynchronizedAppenderBase[E] {
+class IODirectAppender[E] extends UnsynchronizedAppenderBase[E] {
 
   def intializeMetrics = {
     val metrics: MetricRegistry = new MetricRegistry();

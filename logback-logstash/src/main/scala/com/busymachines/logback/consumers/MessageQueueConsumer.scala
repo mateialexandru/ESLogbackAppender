@@ -1,7 +1,7 @@
-package com.busymachines.logback.appenders
+package com.busymachines.logback.consumers
 
 import java.util.concurrent.LinkedBlockingQueue
-
+import com.busymachines.logback.misc.ESConfig
 import org.elasticsearch.client.transport.TransportClient
 import org.elasticsearch.common.settings.ImmutableSettings
 import org.elasticsearch.common.transport.InetSocketTransportAddress
@@ -11,7 +11,7 @@ import org.joda.time.format.DateTimeFormat
 /**
  * Created by alex on 23.06.2014.
  */
-class MessageConsumer(messageQueue: LinkedBlockingQueue[String], esConfig: ESConfig) extends Runnable {
+class MessageQueueConsumer(messageQueue: LinkedBlockingQueue[String], esConfig: ESConfig) extends Runnable {
 
   lazy val client = new TransportClient(ImmutableSettings.settingsBuilder().put("cluster.name", esConfig.clusterName))
     .addTransportAddresses(esConfig.hostNames.split(",").map(new InetSocketTransportAddress(_, esConfig.port.toInt)): _*)

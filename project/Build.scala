@@ -12,7 +12,7 @@ object logbackLogstashBuild extends Build {
   val scalatest = "org.scalatest" %% "scalatest" % "2.2.0" withSources()
   val scalaspecs =  "org.specs2" %% "specs2" % "1.14" % "test" withSources()
   val logback = "ch.qos.logback" % "logback-classic" % "1.0.9"
-  val akkaActor = "com.typesafe.akka" %% "akka-actor" % "2.3.2" exclude("com.typesafe.akka","akka-actor_2.10") 
+  val akkaActor = "com.typesafe.akka" %% "akka-actor" % "2.4.0" exclude("com.typesafe.akka","akka-actor_2.10")
   val jodaTime = "joda-time" % "joda-time" % "2.1"
   val jodaConvert = "org.joda" % "joda-convert" % "1.2"
   val grizzled = "org.clapper" %% "grizzled-slf4j" % "1.0.2"
@@ -22,7 +22,7 @@ object logbackLogstashBuild extends Build {
   val slick = "com.typesafe.slick" %% "slick" % "2.1.0-M2" withSources()
   val elasticsearch = "org.elasticsearch" % "elasticsearch" % "1.2.1" withSources()
   val metrics = "com.codahale.metrics" % "metrics-core" % "3.0.1" withSources()
-
+  val scalaActors = "org.scala-lang" % "scala-actors" % "2.11.1" withSources()
   def defaultSettings =
     Project.defaultSettings ++
     SbtOneJar.oneJarSettings ++    
@@ -84,6 +84,6 @@ crossScalaVersions := Seq("2.11.1", "2.10.4"),
 
 
   lazy val logbackLogstash = Project(id = "logback-logstash", base = file("logback-logstash"), settings = defaultSettings ++ Seq(
-    libraryDependencies ++= Seq(grizzled, scalatest,junit,testKit,  logback,  jodaTime, jodaConvert, slick, elasticsearch, pegdown, metrics)))
+    libraryDependencies ++= Seq(grizzled, scalatest,junit,testKit,  logback,  jodaTime, jodaConvert, slick, elasticsearch, pegdown, metrics, scalaActors)))
 
 }

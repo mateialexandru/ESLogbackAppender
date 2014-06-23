@@ -6,7 +6,7 @@
 	<!--<appender name="NIOAppender" class="com.busymachines.logback.appenders.NIOLogstashAppender">-->
 		<!--<filePath>/home/alex/Documents/Thesis/logger/logsWithNIO.txt</filePath>-->
 	<!--</appender>-->
-	<!--<appender name="SQLAppender" class="com.busymachines.logback.appenders.SqlLogstashAppender">-->
+	<!--<appender name="SQLAppender" class="com.busymachines.logback.appenders.SqlDirectAppender">-->
 		<!--<database>log</database>-->
 		<!--<driver>org.postgresql.Driver</driver>-->
 		<!--<host>localhost</host>-->
@@ -14,14 +14,14 @@
 		<!--<user>postgres</user>-->
 		<!--<password>HOew6xq31J7rBBA</password>-->
 	<!--</appender>-->
-	<appender name="ESAppender" class="com.busymachines.logback.appenders.EsLogstashAppender">
-		<indexNamePrefix>logstash</indexNamePrefix>
-		<indexNameDateFormat>YYYY.MM.dd</indexNameDateFormat>
-		<indexDocumentType>logs</indexDocumentType>
-		<clusterName>elasticsearch</clusterName>
-		<hostNames>localhost</hostNames>
-		<port>9300</port>
-	</appender>
+	<!--<appender name="ESAppender" class="com.busymachines.logback.appenders.EsDirectAppender">-->
+		<!--<indexNamePrefix>logstash</indexNamePrefix>-->
+		<!--<indexNameDateFormat>YYYY.MM.dd</indexNameDateFormat>-->
+		<!--<indexDocumentType>logs</indexDocumentType>-->
+		<!--<clusterName>elasticsearch</clusterName>-->
+		<!--<hostNames>localhost</hostNames>-->
+		<!--<port>9300</port>-->
+	<!--</appender>-->
 	<!--<appender name="MQESAppender"-->
 		<!--class="com.busymachines.logback.appenders.MessageQueueEsLogstashAppender">-->
 		<!--<indexNamePrefix>logstash</indexNamePrefix>-->
@@ -31,6 +31,14 @@
 		<!--<hostNames>localhost</hostNames>-->
 		<!--<port>9300</port>-->
 	<!--</appender>-->
+    <appender name="ActorESAppender" class="com.busymachines.logback.appenders.ActorEsAppender">
+        <indexNamePrefix>logstash</indexNamePrefix>
+        <indexNameDateFormat>YYYY.MM.dd</indexNameDateFormat>
+        <indexDocumentType>logs</indexDocumentType>
+        <clusterName>elasticsearch</clusterName>
+        <hostNames>localhost</hostNames>
+        <port>9300</port>
+    </appender>
 
 	<!--<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">-->
 		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
@@ -42,7 +50,8 @@
 	<!--</appender>-->
 
 	<root level="DEBUG">
-		<appender-ref ref="ESAppender" />
+        <appender-ref ref="ActorESAppender" />
+        <!--<appender-ref ref="ESAppender" />-->
 		<!--<appender-ref ref="SQLAppender" />-->
 		<!--<appender-ref ref="NIOAppender" />-->
 		<!--<appender-ref ref="MQESAppender" />-->

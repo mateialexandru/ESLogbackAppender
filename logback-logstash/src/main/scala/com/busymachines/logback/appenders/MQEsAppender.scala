@@ -5,6 +5,8 @@ import java.util.concurrent.LinkedBlockingQueue
 import com.busymachines.logback.LogHelper.toList
 import ch.qos.logback.core.{Layout, UnsynchronizedAppenderBase}
 import com.busymachines.logback.LogstashAppenderLayout
+import com.busymachines.logback.consumers.MessageQueueConsumer
+import com.busymachines.logback.misc.ESConfig
 import com.codahale.metrics.{Timer, ConsoleReporter, CsvReporter, MetricRegistry}
 import java.util.concurrent.TimeUnit
 import java.util.Locale
@@ -13,7 +15,7 @@ import scala.beans.BeanProperty
 /**
  * Created by alex on 23.06.2014.
  */
-class MessageQueueEsLogstashAppender[E] extends UnsynchronizedAppenderBase[E] {
+class MQEsAppender[E] extends UnsynchronizedAppenderBase[E] {
 
   val messageQueue = new LinkedBlockingQueue[String](15024)
 
@@ -29,7 +31,7 @@ class MessageQueueEsLogstashAppender[E] extends UnsynchronizedAppenderBase[E] {
   @BeanProperty var logstashIdentity: String = "appender-test"
   @BeanProperty var logstashSourceHost: String = java.net.InetAddress.getLocalHost.getHostName
 
-  def intializeMessageConsumer = new Thread(new MessageConsumer(messageQueue, ESConfig(indexNamePrefix, indexNameDateFormat, clusterName, indexDocumentType, hostNames, port, logstashTags, logstashIdentity, logstashSourceHost))).start()
+  def intializeMessageConsumer = new Thread(new MessageQueueConsumer(messageQueue, ESConfig(indexNamePrefix, indexNameDateFormat, clusterName, indexDocumentType, hostNames, port, logstashTags, logstashIdentity, logstashSourceHost))).start()
 
   def initializeMetrics = {
     val metrics: MetricRegistry = new MetricRegistry();

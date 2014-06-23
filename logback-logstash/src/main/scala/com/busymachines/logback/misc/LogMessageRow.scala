@@ -1,4 +1,4 @@
-package com.busymachines.logback.appenders
+package com.busymachines.logback.misc
 
 import org.joda.time.DateTime
 

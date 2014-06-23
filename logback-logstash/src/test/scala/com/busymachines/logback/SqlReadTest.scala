@@ -1,6 +1,6 @@
 package com.busymachines.logback
 
-import com.busymachines.logback.appenders.LogMessages
+import com.busymachines.logback.misc.LogMessages
 import org.scalatest.FlatSpec
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner

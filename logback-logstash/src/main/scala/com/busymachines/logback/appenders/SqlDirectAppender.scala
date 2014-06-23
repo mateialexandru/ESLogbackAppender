@@ -2,6 +2,7 @@ package com.busymachines.logback.appenders
 
 import ch.qos.logback.classic.spi.{ ILoggingEvent }
 import ch.qos.logback.core.{ Layout, LayoutBase, UnsynchronizedAppenderBase }
+import com.busymachines.logback.misc.{LogstashSQLAppenderLayout, LogMessages}
 import scala.util.matching.Regex
 import java.util.Locale
 import org.joda.time.DateTime
@@ -27,7 +28,7 @@ import scala.slick.ast.ColumnOption.DBType
 /**
  * Created by alex on 23.06.2014.
  */
-class SqlLogstashAppender[E] extends UnsynchronizedAppenderBase[E] {
+class SqlDirectAppender[E] extends UnsynchronizedAppenderBase[E] {
   val logMessages = TableQuery[LogMessages]
 
   @BeanProperty var host = "localhost"

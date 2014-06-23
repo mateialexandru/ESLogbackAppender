@@ -22,7 +22,7 @@ import java.nio.file.StandardOpenOption
 import com.codahale.metrics.{ Timer, MetricRegistry, ConsoleReporter, CsvReporter }
 import java.util.concurrent.TimeUnit
 
-class NIOLogstashAppender[E] extends UnsynchronizedAppenderBase[E] {
+class NIODirectAppender[E] extends UnsynchronizedAppenderBase[E] {
 
   def intializeMetrics = {
     val metrics: MetricRegistry = new MetricRegistry();
