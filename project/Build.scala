@@ -9,17 +9,17 @@ import com.github.retronym.SbtOneJar
 
 object logbackLogstashBuild extends Build {
 
-  val scalatest = "org.scalatest" %% "scalatest" % "2.0.M5b" withSources()
+  val scalatest = "org.scalatest" %% "scalatest" % "2.2.0" withSources()
   val scalaspecs =  "org.specs2" %% "specs2" % "1.14" % "test" withSources()
   val logback = "ch.qos.logback" % "logback-classic" % "1.0.9"
-  val akkaActor = "com.typesafe.akka" %% "akka-actor" % "2.1.2" 
+  val akkaActor = "com.typesafe.akka" %% "akka-actor" % "2.3.2" exclude("com.typesafe.akka","akka-actor_2.10") 
   val jodaTime = "joda-time" % "joda-time" % "2.1"
   val jodaConvert = "org.joda" % "joda-convert" % "1.2"
-  val grizzled = "org.clapper" %% "grizzled-slf4j" % "1.0.1"
+  val grizzled = "org.clapper" %% "grizzled-slf4j" % "1.0.2"
   val pegdown = "org.pegdown" % "pegdown" % "1.0.2"
-  val testKit = "io.spray" % "spray-testkit" % "1.2.0" % "test" withSources()
+  val testKit = "io.spray" % "spray-testkit" % "1.3.1" % "test" withSources()
   val junit = "junit" % "junit" % "4.11" % "test" withSources()
-  val slick = "com.typesafe.slick" %% "slick" % "2.0.2" withSources()
+  val slick = "com.typesafe.slick" %% "slick" % "2.1.0-M2" withSources()
   val elasticsearch = "org.elasticsearch" % "elasticsearch" % "1.2.1" withSources()
   val metrics = "com.codahale.metrics" % "metrics-core" % "3.0.1" withSources()
 
@@ -31,12 +31,19 @@ object logbackLogstashBuild extends Build {
       organization := "com.busymachines",
       version := "1.0.0-SNAPSHOT",
       sbtPlugin := false,
-      scalaVersion := "2.10.1",
+      scalaVersion := "2.11.1",
 crossScalaVersions := Seq("2.11.1", "2.10.4"),
       publishMavenStyle := false,
       exportJars := true,      
       parallelExecution in Global := false,
-      scalacOptions ++= Seq("-deprecation", "-unchecked", "-encoding", "utf8"),
+
+        scalacOptions ++= Seq("-deprecation", "-unchecked", "-encoding", "utf8", "-feature", "-language:implicitConversions", "-language:postfixOps", "-language:higherKinds", "-language:existentials", "-language:reflectiveCalls"),
+            scalacOptions <++= scalaBinaryVersion map {
+              case "2.11" => Seq("-Ydelambdafy:method")
+              case _ => Nil
+            },
+
+
       javacOptions in Compile ++= Seq("-encoding", "utf8", "-g"),
       EclipseKeys.withSource := true,
       EclipseKeys.skipParents in ThisBuild := true, // true is the default
@@ -49,10 +56,14 @@ crossScalaVersions := Seq("2.11.1", "2.10.4"),
       testOptions in Test <+= (target in Test) map {
         t => Tests.Argument(TestFrameworks.ScalaTest, "junitxml(directory=\"%s\")" format (t / "test-reports"))
       },
-    resolvers += Resolver.url("busymachines snapshots", url("http://archiva.busymachines.com/repository/snapshots/"))(Resolver.ivyStylePatterns),
-    resolvers += "spray repo" at "http://repo.spray.io",
-    resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
-      )
+ resolvers += Resolver.url("busymachines snapshots", url("http://archiva.busymachines.com/repository/snapshots/"))(Resolver.ivyStylePatterns),
+        resolvers += "Typesafe Maven Snapshots" at "http://repo.typesafe.com/typesafe/snapshots/",
+        resolvers +=  "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases/",
+        resolvers +=  "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
+        resolvers += "Typesafe Maven Releases" at "http://repo.typesafe.com/typesafe/releases/",
+        resolvers += "spray repo" at "http://repo.spray.io"      
+
+)
 
   def publishSettings = Seq(
     licenses := Seq("The Apache Software Licence, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
@@ -73,6 +84,6 @@ crossScalaVersions := Seq("2.11.1", "2.10.4"),
 
 
   lazy val logbackLogstash = Project(id = "logback-logstash", base = file("logback-logstash"), settings = defaultSettings ++ Seq(
-    libraryDependencies ++= Seq(grizzled, scalatest,junit,testKit, scalaspecs, logback, akkaActor, jodaTime, jodaConvert, slick, elasticsearch, pegdown, metrics)))
+    libraryDependencies ++= Seq(grizzled, scalatest,junit,testKit,  logback,  jodaTime, jodaConvert, slick, elasticsearch, pegdown, metrics)))
 
 }

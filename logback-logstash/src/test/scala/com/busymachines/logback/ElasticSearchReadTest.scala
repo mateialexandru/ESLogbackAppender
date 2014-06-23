@@ -28,7 +28,7 @@ import org.elasticsearch.search.facet.FacetBuilders
 import org.elasticsearch.index.query.QueryBuilders
 
 @RunWith(classOf[JUnitRunner])
-class LogTes2t extends FlatSpec with grizzled.slf4j.Logging {
+class ElasticSearchReadTest extends FlatSpec with grizzled.slf4j.Logging {
 
   def initializeMetrics = {
     val metrics: MetricRegistry = new MetricRegistry();

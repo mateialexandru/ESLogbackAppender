@@ -1,59 +1,18 @@
-package com.busymachines.logback
+package com.busymachines.logback.appenders
 
-import ch.qos.logback.classic.spi.{ ILoggingEvent }
-import ch.qos.logback.core.{ Layout, LayoutBase, UnsynchronizedAppenderBase }
-import scala.util.matching.Regex
-import java.util.Locale
-import org.joda.time.DateTime
-import scala.beans.BeanProperty
-import scala.beans.BooleanBeanProperty
-import ch.qos.logback.classic.spi.StackTraceElementProxy
-import com.busymachines.logback.LogHelper._
-import org.elasticsearch.client.transport.TransportClient
-import org.elasticsearch.common.settings.ImmutableSettings
-import org.elasticsearch.common.transport.InetSocketTransportAddress
-import org.elasticsearch.common.xcontent.XContentFactory._
-import org.joda.time.format.DateTimeFormat
-import com.codahale.metrics.{ Timer, MetricRegistry, ConsoleReporter, CsvReporter }
-import java.util.concurrent.TimeUnit
 import java.io.File
-import java.util.concurrent.ArrayBlockingQueue
-import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
+import com.busymachines.logback.LogHelper.toList
+import ch.qos.logback.core.{Layout, UnsynchronizedAppenderBase}
+import com.busymachines.logback.LogstashAppenderLayout
+import com.codahale.metrics.{Timer, ConsoleReporter, CsvReporter, MetricRegistry}
+import java.util.concurrent.TimeUnit
+import java.util.Locale
+import scala.beans.BeanProperty
 
-class MessageConsumer(messageQueue: LinkedBlockingQueue[String], esConfig: ESConfig) extends Runnable {
-
-  lazy val client = new TransportClient(ImmutableSettings.settingsBuilder().put("cluster.name", esConfig.clusterName))
-    .addTransportAddresses(esConfig.hostNames.split(",").map(new InetSocketTransportAddress(_, esConfig.port.toInt)): _*)
-
-  lazy val actualIndexName = s"${esConfig.indexNamePrefix}-${DateTimeFormat.forPattern(esConfig.indexNameDateFormat).print(DateTime.now)}"
-
-  def run() {
-    do {
-      try{
-      
-      client.prepareIndex(
-        actualIndexName, esConfig.indexDocumentType)
-        .setSource(messageQueue.take)
-        .execute()
-        .actionGet()
-      }catch{
-        case ex:Exception=>println(ex)
-      }
-    }while(true)
-  }
-}
-case class ESConfig(
-  indexNamePrefix: String,
-  indexNameDateFormat: String,
-  clusterName: String,
-  indexDocumentType: String,
-  hostNames: String,
-  port: String,
-  logstashTags: String,
-  logstashIdentity: String,
-  logstashSourceHost: String)
-
+/**
+ * Created by alex on 23.06.2014.
+ */
 class MessageQueueEsLogstashAppender[E] extends UnsynchronizedAppenderBase[E] {
 
   val messageQueue = new LinkedBlockingQueue[String](15024)

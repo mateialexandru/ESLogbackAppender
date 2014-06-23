@@ -1,5 +1,6 @@
 package com.busymachines.logback
 
+import com.busymachines.logback.appenders.LogMessages
 import org.scalatest.FlatSpec
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
@@ -26,10 +27,9 @@ import java.sql.Timestamp
 import scala.slick.driver.PostgresDriver
 import scala.slick.driver.PostgresDriver.backend.Session
 import scala.slick.ast.ColumnOption.DBType
-import com.busymachines.logback.LogMessages
 
 @RunWith(classOf[JUnitRunner])
-class LogTest extends FlatSpec with grizzled.slf4j.Logging {
+class SqlReadTest extends FlatSpec with grizzled.slf4j.Logging {
 
   def initializeMetrics = {
     val metrics: MetricRegistry = new MetricRegistry();

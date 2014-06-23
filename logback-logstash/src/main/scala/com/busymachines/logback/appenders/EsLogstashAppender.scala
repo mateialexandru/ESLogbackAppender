@@ -1,7 +1,8 @@
-package com.busymachines.logback
+package com.busymachines.logback.appenders
 
 import ch.qos.logback.classic.spi.{ ILoggingEvent }
 import ch.qos.logback.core.{ Layout, LayoutBase, UnsynchronizedAppenderBase }
+import com.busymachines.logback.LogstashAppenderLayout
 import scala.util.matching.Regex
 import java.util.Locale
 import org.joda.time.DateTime
@@ -32,7 +33,7 @@ class EsLogstashAppender[E] extends UnsynchronizedAppenderBase[E] {
       .convertRatesTo(TimeUnit.SECONDS)
       .convertDurationsTo(TimeUnit.MILLISECONDS)
       .build(new File("/home/alex/Documents/Thesis/logger/metrics/ESAppender/"));
-     reporter2.start(1, TimeUnit.MINUTES);
+     reporter.start(1, TimeUnit.SECONDS);
     //reporter2.start(1, TimeUnit.SECONDS);
 
     timer
@@ -46,7 +47,7 @@ class EsLogstashAppender[E] extends UnsynchronizedAppenderBase[E] {
   @BeanProperty var port = "9300"
 
   /* Logstash specific settings */
-  @BeanProperty var logstashTags: String = "paul1,paul2"
+  @BeanProperty var logstashTags: String = "test, development"
   @BeanProperty var logstashIdentity: String = "appender-test"
   @BeanProperty var logstashSourceHost: String = java.net.InetAddress.getLocalHost.getHostName
 
